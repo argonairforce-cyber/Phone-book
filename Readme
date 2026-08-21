@@ -1,0 +1,176 @@
+Phone Book Desktop App
+<p align="center">
+  A clean, Persian-language desktop phone book built with Python, CustomTkinter, and SQLite.
+</p>
+<p align="center">
+  <img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white">
+  <img alt="CustomTkinter" src="https://img.shields.io/badge/GUI-CustomTkinter-1F6AA5">
+  <img alt="SQLite" src="https://img.shields.io/badge/Database--003B57?logo=sqlite&logoColor=white">
+  <img alt="Platform" src="https://img.shields.io/badge/Platform-Desktop-4B5563">
+</p>
+Overview
+Phone Book is a desktop contact-management application with a modern Persian user interface. It keeps the graphical interface separate from the database layer, making the project easier to understand, maintain, and extend.
+Users can create contact groups, add and edit contacts, search by name or phone number, filter contacts by group, and safely remove records through confirmation dialogs.
+Features
+Add, edit, view, and delete contacts
+Store first name, last name, phone number, email, and group
+Search contacts by name or phone number
+Create and delete contact groups
+Filter the contact table by group
+Prevent duplicate group names through the database layer
+Protect non-empty groups from accidental deletion
+Validate required contact fields before saving
+Confirm destructive actions before deletion
+Display clear success and error messages in the application
+Close the database connection safely when the window exits
+Responsive desktop layout with a scrollable contact table
+Persian, right-aligned user interface
+Tech Stack
+Technology	Purpose
+Python	Application logic
+CustomTkinter	Modern desktop interface
+Tkinter `ttk`	Contact table and scrollbar
+SQLite	Local data persistence
+Project Structure
+```text
+phone-book/
+├── main.py          # Application window, interface, and event handling
+├── database.py      # SQLite connection, schema, and CRUD operations
+├── requirements.txt # Python dependencies (recommended)
+├── .gitignore       # Files excluded from Git
+└── README.md        # Project documentation
+```
+The application expects `database.py` to provide a `Database` class with the following methods:
+```text
+get_groups()
+add_group(name)
+delete_group(group_id)
+get_contacts(group_id=None)
+search_contacts(text)
+get_contact(contact_id)
+add_contact(first_name, last_name, phone, email, group_id)
+update_contact(contact_id, first_name, last_name, phone, email, group_id)
+delete_contact(contact_id)
+close()
+```
+Getting Started
+Prerequisites
+Python 3.10 or newer
+`pip`
+Tkinter support
+> Tkinter is included with most Windows and macOS Python installations. Some Linux distributions require it to be installed separately.
+1. Clone the repository
+```bash
+git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
+cd YOUR-REPOSITORY
+```
+Replace the example URL with the actual URL of this repository.
+2. Create a virtual environment
+Windows (PowerShell):
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+macOS or Linux:
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+3. Install the dependency
+```bash
+python -m pip install --upgrade pip
+python -m pip install customtkinter
+```
+On Debian- or Ubuntu-based Linux systems, install Tkinter if it is missing:
+```bash
+sudo apt install python3-tk
+```
+4. Run the application
+```bash
+python main.py
+```
+How to Use
+Enter a name in the sidebar and select افزودن گروه to create a group.
+Enter the contact details in the form below the table.
+Select افزودن مخاطب to save the new contact.
+Select a row to load that contact into the form.
+Edit the values and select ذخیره تغییرات to save the changes.
+Use the search field to find a contact by name or phone number.
+Select a group in the sidebar to display only its contacts.
+Use نمایش همه to clear the current search and group filter.
+Application Design
+The project follows a simple two-layer structure:
+```mermaid
+flowchart LR
+    U["User"] --> G["CustomTkinter interface"]
+    G --> D["Database class"]
+    D --> S[("SQLite database")]
+```
+`main.py` builds the interface, validates user input, and handles events.
+`database.py` owns SQL execution, transactions, and persistent storage.
+SQLite stores the data locally, so no external database server is required.
+Keeping these responsibilities separate prevents SQL details from leaking into the interface code and makes both layers easier to test.
+Input and Deletion Rules
+First name and phone number are required.
+Last name, email, and group are optional.
+An existing group name cannot be added again.
+A group containing contacts cannot be deleted.
+Contact and group deletion require user confirmation.
+Database errors are caught and shown in the status area instead of crashing the interface.
+Recommended `requirements.txt`
+Create a `requirements.txt` file with:
+```text
+customtkinter>=5.2,<6.0
+```
+Then dependencies can be installed with:
+```bash
+python -m pip install -r requirements.txt
+```
+Suggested `.gitignore`
+```gitignore
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.idea/
+.vscode/
+*.db
+*.sqlite
+*.sqlite3
+logs/
+*.log
+```
+If a sample database is intentionally part of the repository, remove its extension from the ignore rules above.
+Troubleshooting
+`ModuleNotFoundError: No module named 'customtkinter'`
+Activate the project virtual environment, then run:
+```bash
+python -m pip install customtkinter
+```
+`ModuleNotFoundError: No module named 'database'`
+Make sure `database.py` is in the same directory as `main.py` and contains the `Database` class.
+Tkinter is unavailable on Linux
+Install the Tkinter package supplied by your Linux distribution. For Debian or Ubuntu:
+```bash
+sudo apt install python3-tk
+```
+Persian text is displayed with an unsuitable font
+The interface uses Tahoma. Install Tahoma or replace the `FONT`, `FONT_BOLD`, and `FONT_TITLE` constants in `main.py` with another Persian-compatible font available on the system.
+Roadmap
+[ ] Add phone-number and email format validation
+[ ] Export and import contacts as CSV
+[ ] Add automated tests for the database layer
+[ ] Add dark-mode selection
+[ ] Add contact avatars and notes
+[ ] Package the application as a standalone executable
+Contributing
+Contributions are welcome. To contribute:
+Fork the repository.
+Create a feature branch: `git switch -c feature/your-feature`.
+Commit your changes with a clear message.
+Push the branch and open a pull request.
+Please keep interface logic in `main.py` and database operations in `database.py`.
+License
+No license has been specified yet. Add a `LICENSE` file before distributing or accepting external contributions so the permitted uses are clear.
+---
+Built as a practical Python exercise in desktop GUI development, SQLite, and clean separation of concerns.
